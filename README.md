@@ -109,6 +109,28 @@ python server.py
 
 The server will start on `http://0.0.0.0:5000`
 
+### Step 6: Simulate Detection with an MP4 Video
+
+If you want to test the model without real sensor hardware, you can run the same detection pipeline on a fire video and inject simulated sensor readings.
+
+```bash
+python server.py --video path\to\house_fire.mp4 --temperature 58 --humidity 35 --smoke 2800
+```
+
+This runs in a separate offline mode and does not change the normal `/upload` behavior used with live sensor values.
+GradCAM is disabled by default in video mode so playback is usable on CPU. If you want the heatmap anyway, add `--with-gradcam`.
+
+You can also vary the sensor values over time with comma-separated sequences:
+
+```bash
+python server.py --video path\to\house_fire.mp4 --temperature-seq 28,30,34,45,58 --smoke-seq 900,1200,1700,2400,3200
+```
+
+Optional flags:
+- `--frame-stride 2` processes every second frame.
+- `--loop` repeats the video until you press `q`.
+- `--with-gradcam` enables GradCAM during video simulation, but it is much slower.
+
 ## 📡 API Usage
 
 ### Endpoint: `/upload`
